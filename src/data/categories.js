@@ -1,0 +1,20 @@
+export const categories = [
+  "All",
+  "3D Objects",
+  "Abstract",
+  "Illustrations",
+  "Icons",
+  "Backgrounds",
+  "Textures",
+  "Gradients",
+  "UI Assets",
+  "Logos",
+  "Motion Graphics",
+  "Web3",
+  "AI",
+  "Cyberpunk",
+  "Retro",
+  "Minimal",
+  "Asset Packs",
+  "Animated Assets"
+];
