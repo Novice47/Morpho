@@ -42,8 +42,8 @@ const startServer = async () => {
     console.warn("WARNING: MONGODB_URI is not set. Express server running without database connection (falling back to mockup data responses).");
   }
   
-  app.listen(PORT, () => {
-    console.log(`Express server running on http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
   });
 };
 
