@@ -1,12 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { connectDB } from './config/db.js';
 import assetRoutes from './routes/assetRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import creatorRoutes from './routes/creatorRoutes.js';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,6 +37,15 @@ app.use('/api/creators', creatorRoutes);
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'active', timestamp: new Date().toISOString() });
+});
+
+// Serve Vite-built frontend static files
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath));
+
+// Catch-all: send index.html for any non-API route (React SPA client-side routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // Setup server and connect to MongoDB Atlas
