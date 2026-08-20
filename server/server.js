@@ -58,7 +58,23 @@ const startServer = async () => {
   
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
+
+    // Keep-alive: ping /health every 14 minutes so Render free tier never spins down
+    const RENDER_URL = process.env.RENDER_EXTERNAL_URL;
+    if (RENDER_URL) {
+      const PING_INTERVAL_MS = 14 * 60 * 1000; // 14 minutes
+      setInterval(async () => {
+        try {
+          const res = await fetch(`${RENDER_URL}/health`);
+          console.log(`[KEEP-ALIVE] Pinged ${RENDER_URL}/health — status: ${res.status}`);
+        } catch (err) {
+          console.error(`[KEEP-ALIVE] Ping failed:`, err.message);
+        }
+      }, PING_INTERVAL_MS);
+      console.log(`[KEEP-ALIVE] Self-ping active every 14 min → ${RENDER_URL}/health`);
+    }
   });
 };
 
 startServer();
+
